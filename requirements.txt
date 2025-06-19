@@ -1,0 +1,22 @@
+# ───────── Core framework ─────────
+Django==5.0.14                # 5.0 “current” micro-release
+django-environ==0.12.0        # .env handling
+
+# ───────── First-party add-ons ─────────
+whitenoise==6.9.0             # static file serving
+django-crispy-forms==2.4      # DRY forms foundation
+crispy-bootstrap5==2025.6     # Bootstrap 5 template pack
+django-filter==25.1           # list-view filtering
+django-axes==8.0.0            # login-attempt throttling
+
+# ───────── Testing – fixtures ─────────
+pytest-django==4.11.1
+factory-boy==3.3.3
+
+# ───────── Dev / CI quality tools ─────────
+black==25.1.0
+isort==6.0.1
+flake8==7.2.0
+
+# ───────── Dependency management ─────────
+pip-tools==7.4.1              # pip-compile / pip-sync
