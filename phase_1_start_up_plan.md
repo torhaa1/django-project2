@@ -13,14 +13,14 @@ A functional, multi‑tenant CRUD MVP that a novice developer can run locally or
 | **Python** | 3.12 | Latest stable with security updates to 2028 and modern syntax while broadly supported. |
 | **Django** | 5.0.x | Current stable release with active bug‑fixes and clear docs. |
 | **Environment** | `python -m venv` + `pip‑tools` | Native, deterministic, zero lock‑file surprises. |
-| **Settings layout** | `settings/dev.py` & `settings/prod.py` via **django‑environ** | Clean secret handling; visible local defaults for newcomers. |
+| **Settings layout** | `settings/dev.py` & `settings/prod.py`, loading environment variables via **python‑decouple** and `.env` files | Keep secrets (e.g. `SECRET_KEY`, DB credentials, API tokens) in `.env` files, never in code. |
 
 ## 2 · Architecture
 
 | Decision | Rationale |
 | --- | --- |
 | **Single app `core_app`** | One clear namespace; avoids premature boundaries. |
-| **Server‑side HTML + HTMX** | Simple request/response debug path; only add HTMX and Alpine.js or vanilla javascript if truly neccessary. |
+| **Server‑side HTML + sprinkles of HTMX** | Simple request/response debug path; only add HTMX and Alpine.js or vanilla javascript if truly neccessary. |
 | **No async** | WSGI keeps deployment & debugging trivial for ≤20 concurrent users. |
 | **Logic placement** | Models enforce rules; views stay ≤15 LOC; escape‑hatch `services/` for workflows. |
 
@@ -31,7 +31,7 @@ A functional, multi‑tenant CRUD MVP that a novice developer can run locally or
 | **Engine** | SQLite (dev & prod) | Zero‑maintenance, file‑backup, fast enough for early traffic. |
 | **PK** | `UUIDField(primary_key=True)` | Unguessable IDs; safe for external links. |
 | **Multi‑tenancy** | FK → `Company` + default manager filters | Row isolation without DB‑level RLS. |
-| **Migrations** | Linear; squash ~50 | Keeps history readable and CI quick. |
+| **Migrations** | Linear; squash ~25 | Keeps history readable and CI quick. |
 
 ## 4 · URLs
 
@@ -44,7 +44,8 @@ A functional, multi‑tenant CRUD MVP that a novice developer can run locally or
 | Choice | Rationale |
 | --- | --- |
 | **Prefer Built‑in CBVs** (`ListView`, `DetailView`, `CreateView`, etc.) | CRUD in a handful of lines; inherits Django best‑practice behaviour; inline with lean, simple codebase. |
-| **Example of mixins** | `LoginRequiredMixin`, custom `CompanyRestrictedMixin` → declarative auth & tenant scoping. |
+| **Project-specific mixins for cross-cutting concerns** | Write few small mixins to handle things like tenant scoping or automatic “owner/tenant” stamping; this removes repetitive code while staying explicit and easy to audit. |
+| **Standard auth/permission mixins (LoginRequiredMixin, PermissionRequiredMixin, etc.)** | Add access control declaratively—plug-and-play security with zero bespoke logic. |
 
 ## 6 · Forms
 
@@ -70,7 +71,7 @@ A functional, multi‑tenant CRUD MVP that a novice developer can run locally or
 | **Authentication backend** | Default Django; SSO can be dropped in later. |
 | **RBAC** | `CompanyRestrictedMixin` auto‑filters QuerySets; templates stay permission‑free. |
 
-## 13 · Security Basics (apply from Day 1)
+## 9 · Security Basics (apply from Day 1)
 
 - `SECURE_HSTS_SECONDS = 31536000`, `SECURE_SSL_REDIRECT = True` once behind TLS.
 - `CSRF_TRUSTED_ORIGINS` set via env per deploy host.
@@ -88,4 +89,3 @@ A functional, multi‑tenant CRUD MVP that a novice developer can run locally or
 6. Verify tenant scoping locally with two test companies.
 
 Move to **Phase 2** once the MVP works end‑to‑end.
-

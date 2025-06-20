@@ -5,28 +5,27 @@ Polish the MVP into a production‑ready service: add user niceties, admin tooli
 
 ---
 
-## 9 · User‑Facing Extras
+## 10 · User‑Facing Extras
 
 | Feature | Rationale |
 | --- | --- |
 | **Filtering** (`django‑filter`) | One‑liner drop‑in to help users narrow result sets. |
 | **Pagination** (25/page) | Balances load time and scrolling; built into CBVs. |
 
-## 10 · Admin
+## 11 · Admin
 
 | Decision | Rationale |
 | --- | --- |
 | Register all models; `list_filter=('company',)` | Instant back‑office UI while preserving tenant boundaries. |
 
-## 11 · Testing & Quality
+## 12 · Testing & Quality
 
 | Tool | Rationale |
 | --- | --- |
 | `pytest‑django` | Succinct asserts & fixtures; great IDE support. |
 | `factory_boy` | Declarative, reusable test data. |
-| `black`, `isort`, `flake8` (pre‑commit) | Enforce style before merge; keeps code newcomer‑friendly. |
 
-## 12 · Performance Guidelines
+## 13 · Performance Guidelines
 
 - Use `.select_related('company')` to eliminate N + 1 queries.
 - Only add `cache_page` or local‑mem cache when profiling shows clear wins.
@@ -73,4 +72,3 @@ Complete these steps to reach Phase 2:
 4. Integrate Sentry and JSON logging.
 5. Containerise with `nginx` + `waitress`; enable WhiteNoise.
 6. Capture decisions as ADRs and polish docs.
-
