@@ -22,7 +22,7 @@ A functional, multi‑tenant CRUD MVP that a novice developer can run locally or
 | **Single app `core_app`** | One clear namespace; avoids premature boundaries. |
 | **Server‑side HTML + sprinkles of HTMX** | Simple request/response debug path; only add HTMX and Alpine.js or vanilla javascript if truly neccessary. |
 | **No async** | WSGI keeps deployment & debugging trivial for ≤20 concurrent users. |
-| **Logic placement** | Models enforce rules; views stay ≤15 LOC; escape‑hatch `services/` for workflows. |
+| **Logic placement** | Models enforce rules; views stay ≤20 LOC; escape‑hatch `services/` for workflows. |
 
 ## 3 · Database
 
