@@ -11,16 +11,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-cu3ajfl128x22+7x9vj2=&l+@$x!z8$@w1(nk8qf6w%9!c%-0t"
+SECRET_KEY = config('SECRET_KEY', default="django-insecure-cu3ajfl128x22+7x9vj2=&l+@$x!z8$@w1(nk8qf6w%9!c%-0t")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
